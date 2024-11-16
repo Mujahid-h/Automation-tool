@@ -5,7 +5,7 @@ export const createBug = async (req, res) => {
   try {
     const bug = new Bug({ ...req.body, createdBy: req.userId });
     await bug.save();
-    res.status(201).json(bug);
+    res.status(201).json([]);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

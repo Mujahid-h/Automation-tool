@@ -2,9 +2,9 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:5000/api/bugs";
 
-export const createBug = async (bugData) => {
+export const createBug = async (bugData, token) => {
   try {
-    const response = await axios.post(BASE_URL, bugData);
+    const response = await axios.post(BASE_URL, { bugData, token });
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -12,9 +12,12 @@ export const createBug = async (bugData) => {
   }
 };
 
-export const getBugs = async () => {
+export const getBugs = async (token) => {
   try {
-    const response = await axios.get(BASE_URL);
+    const response = await axios.get(BASE_URL, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
     console.log(response.data);
     return response.data;
   } catch (error) {

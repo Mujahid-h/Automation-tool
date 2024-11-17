@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setToken } from "../redux/slices/userSlice";
+import { setToken, setUser } from "../redux/slices/userSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,10 @@ const Navbar = () => {
 
             <button
               className="bg-white text-blue-600 font-semibold py-2 px-4 rounded-lg hover:bg-gray-200 transition"
-              onClick={() => dispatch(setToken(null))}
+              onClick={() => {
+                dispatch(setToken(null));
+                dispatch(setUser(null));
+              }}
             >
               Logout
             </button>

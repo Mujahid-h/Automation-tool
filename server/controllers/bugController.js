@@ -22,9 +22,8 @@ export const getBugs = async (req, res) => {
 
 export const getBug = async (req, res) => {
   try {
-    const bug = await Bug.findOne({
-      _id: req.params.id,
-    });
+    const { id } = req.params;
+    const bug = await Bug.findById(id);
     if (!bug) return res.status(404).json({ message: "Bug not found" });
     res.json(bug);
   } catch (error) {
@@ -58,24 +57,30 @@ export const deleteBug = async (req, res) => {
 
 export const commentOnBug = async (req, res) => {
   try {
-    const { id } = req.params; // Bug ID from route
-    const { text } = req.body; // Comment text from request body
+    const { id } = req.params;
+    const { commentText } = req.body; // Ensure commentText is destructured correctly.
+
+    console.log("Bug ID:", id);
+    console.log("Comment Text:", commentText);
+
+    if (!commentText) {
+      return res.status(400).json({ message: "Comment text is required" });
+    }
 
     const bug = await Bug.findById(id);
     if (!bug) return res.status(404).json({ message: "Bug not found" });
 
-    // Add comment to the bug's comments array
     const comment = {
-      text,
-      createdBy: req.userId,
-      createdAt: new Date(),
+      commentText, // Use the correct field name.
+      commentedBy: req.userId,
     };
-    bug.comments.push(comment);
 
-    // Save the updated bug document
+    bug.comments.push(comment);
     await bug.save();
-    res.status(201).json({ message: "Comment added", comment });
+
+    res.status(201).json({ message: "Comment added successfully", comment });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: error.message });
   }
 };

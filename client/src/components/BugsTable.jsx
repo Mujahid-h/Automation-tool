@@ -36,7 +36,7 @@ const BugsTable = ({ bugs }) => {
                     {new Date(bug.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {bug.createdBy || "Unknown"}
+                    {bug.createdBy.name || "Unknown"}
                   </td>
                   <td
                     className={`px-6 py-4 text-sm font-semibold ${

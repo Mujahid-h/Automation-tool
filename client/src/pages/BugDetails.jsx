@@ -19,7 +19,7 @@ const BugDetails = () => {
     } else {
       fetchBugDetails();
     }
-  }, [token]);
+  }, [token, commentText]);
 
   const fetchBugDetails = async () => {
     try {
@@ -106,7 +106,7 @@ const BugDetails = () => {
               </span>
             </p>
             <p>
-              <strong>Created By:</strong> {bug.createdBy || "Unknown"}
+              <strong>Created By:</strong> {bug.createdBy.name || "Unknown"}
             </p>
             <p>
               <strong>Created At:</strong>{" "}
@@ -159,7 +159,7 @@ const BugDetails = () => {
                     className="bg-gray-50 border rounded-lg p-4 shadow-md"
                   >
                     <p className="text-sm text-gray-500 mb-1">
-                      <strong>{comment.commentedBy || "Unknown"}</strong> -{" "}
+                      <strong>{comment.commentedBy.name || "Unknown"}</strong> -{" "}
                       {new Date(comment.commentedAt).toLocaleString()}
                     </p>
                     <p className="text-gray-800">{comment.commentText}</p>

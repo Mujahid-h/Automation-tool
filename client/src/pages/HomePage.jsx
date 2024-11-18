@@ -4,11 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { getBugs } from "../api/bugApi";
 import DefaultLayout from "../components/DefaultLayout";
 import BugsTable from "../components/BugsTable";
+import FilterBar from "../components/FilterBar";
 
 const HomePage = () => {
   const { token } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [bugs, setBugs] = useState([]);
+  const [filters, setFilters] = useState({
+    bugId: "",
+    createdBy: "",
+    status: "",
+    priority: "",
+    date: "",
+  });
 
   useEffect(() => {
     if (!token) {
@@ -27,9 +35,27 @@ const HomePage = () => {
     }
   };
 
+  const filteredBugs = bugs.filter((bug) => {
+    return (
+      (filters.bugId ? bug._id.includes(filters.bugId) : true) &&
+      (filters.createdBy
+        ? bug.createdBy.name
+            ?.toLowerCase()
+            .includes(filters.createdBy.toLowerCase())
+        : true) &&
+      (filters.status ? bug.status === filters.status : true) &&
+      (filters.priority ? bug.priority === filters.priority : true) &&
+      (filters.date
+        ? new Date(bug.createdAt).toLocaleDateString() ===
+          new Date(filters.date).toLocaleDateString()
+        : true)
+    );
+  });
+
   return (
     <DefaultLayout>
-      <BugsTable bugs={bugs} />
+      <FilterBar filters={filters} setFilters={setFilters} />
+      <BugsTable bugs={filteredBugs} />
     </DefaultLayout>
   );
 };

@@ -5,13 +5,16 @@ const BugsTable = ({ bugs }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-20">
+    <div className="container mx-auto px-4 lg:px-12 py-8 ">
       <div className="overflow-x-auto shadow-lg rounded-lg">
         <table className="min-w-full bg-white rounded-lg overflow-hidden">
           <thead className="bg-gradient-to-r from-blue-500 to-blue-700 text-white">
             <tr>
               <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wide">
                 Date
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wide">
+                Bug ID
               </th>
               <th className="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wide">
                 Created By
@@ -34,6 +37,9 @@ const BugsTable = ({ bugs }) => {
                 >
                   <td className="px-6 py-4 text-sm font-medium text-gray-700">
                     {new Date(bug.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-700">
+                    {bug._id}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
                     {bug.createdBy.name || "Unknown"}

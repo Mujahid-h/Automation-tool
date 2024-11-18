@@ -1,40 +1,24 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import "./App.css";
 import BugDetails from "./pages/BugDetails";
-import Navbar from "./components/Navbar";
+import CreateBug from "./pages/CreateBug";
+import EditBug from "./pages/EditBug";
+import HomePage from "./pages/HomePage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
-        {token && <Navbar setToken={setToken} />}
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              !token ? (
-                <Login setToken={setToken} />
-              ) : (
-                <Navigate to="/dashboard" />
-              )
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={token ? <Dashboard /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/bugs/:id"
-            element={token ? <BugDetails /> : <Navigate to="/login" />}
-          />
-          <Route path="/" element={<Navigate to="/login" />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/bug-detail/:id" element={<BugDetails />} />
+        <Route path="/create-bug" element={<CreateBug />} />
+        <Route path="/edit-bug/:id" element={<EditBug />} />
+      </Routes>
+    </Router>
   );
 }
 

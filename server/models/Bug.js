@@ -1,34 +1,66 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+// models/Bug.js
+import mongoose from "mongoose";
 
-const bugSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ["Open", "In Progress", "Resolved"],
-      default: "Open",
-    },
-    priority: {
-      type: String,
-      enum: ["Low", "Medium", "High"],
-      default: "Medium",
-    },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+const commentSchema = new mongoose.Schema({
+  commentText: {
+    type: String,
+    required: true,
   },
-  { timestamps: true }
-);
+  commentedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  commentedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-const Bug = mongoose.model("Bug", bugSchema);
-module.exports = Bug;
+const bugSchema = new mongoose.Schema({
+  bugName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  priority: {
+    type: String,
+    enum: ["Low", "Medium", "High", "Critical"],
+    default: "Low",
+  },
+  status: {
+    type: String,
+    enum: ["Open", "In Progress", "Resolved", "Closed"],
+    default: "Open",
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  assignedTo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+  },
+  comments: [commentSchema],
+  attachments: [
+    {
+      filename: String,
+      filepath: String,
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+export default mongoose.model("Bug", bugSchema);
